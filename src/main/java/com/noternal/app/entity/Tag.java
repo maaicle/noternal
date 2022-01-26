@@ -1,4 +1,4 @@
-package com.noternal.app.model;
+package com.noternal.app.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
