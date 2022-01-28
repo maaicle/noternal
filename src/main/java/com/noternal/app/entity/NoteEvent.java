@@ -11,8 +11,9 @@ public class NoteEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "note_id")
-    private long noteId;
+    @ManyToOne
+    @JoinColumn(name = "note_id")
+    private Note note;
 
     @Column
     private String body;

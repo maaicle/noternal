@@ -2,6 +2,8 @@ package com.noternal.app.entity;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tags")
@@ -29,6 +31,9 @@ public class Tag {
 
     @Column
     private ZonedDateTime created;
+
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+    private Set<Note> notes = new HashSet<>();
 
     public Tag() {
     }
