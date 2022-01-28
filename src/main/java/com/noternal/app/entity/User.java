@@ -1,34 +1,29 @@
 package com.noternal.app.entity;
 
 import com.noternal.app.model.UserDto;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name="users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_name")
-    private String userName;
+    @Column(name = "username")
+    private String username;
 
-    @Column(name = "pass_hash")
-    private String passHash;
-
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
-    @Column(name = "email")
-    private String email;
+    @Column(name = "password")
+    private String password;
 
     @Column(name = "account_non_locked")
-    private String accountNonLocked;
+    private boolean accountNonLocked;
 
     @Column(name = "created")
     private Timestamp created;
@@ -36,14 +31,22 @@ public class User {
     public User() {
     }
 
-    public User(String userName, String passHash) {
-        this.userName = userName;
-        this.passHash = passHash;
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
+    public User(String username, String password, boolean accountNonLocked) {
+        this.username = username;
+        this.password = password;
+        this.accountNonLocked = accountNonLocked;
+    }
+
+
+
     public User(UserDto userDto){
-        this.userName = userDto.getUserName();
-        this.passHash = userDto.getPassHash();
+        this.username = userDto.getUserName();
+        this.password = userDto.getPassHash();
     }
 
     public Long getId() {
@@ -55,24 +58,59 @@ public class User {
 
     }
 
-    public String getUserName() {
-        return userName;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(() -> "read");
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    @Override
+    public String getPassword() {
+        return password;
     }
 
-    public String getPassHash() {
-        return passHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void setPassHash(String passHash) {
-        this.passHash = passHash;
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public void setAccountNonLocked(Boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
+    public boolean getAccountNonLocked() {
+        return accountNonLocked;
     }
 
     @Override
     public String toString() {
-        return String.format("id= %d, username= %s", id, userName);
+        return String.format("id= %d, username= %s", id, username);
     }
 }
