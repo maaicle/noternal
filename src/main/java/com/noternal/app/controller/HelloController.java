@@ -1,5 +1,6 @@
 package com.noternal.app.controller;
 
+import java.time.ZonedDateTime;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -48,10 +49,12 @@ public class HelloController {
             MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }
     )
     public void addUser(@RequestParam Map<String, String> body) {
+        System.out.println(body);
         User user = new User();
         user.setUsername(body.get("username"));
         user.setPassword(passwordEncoder.encode(body.get("password")));
         user.setAccountNonLocked(true);
+        user.setCreated(ZonedDateTime.now());
         userDetailsManager.createUser(user);
     }
 

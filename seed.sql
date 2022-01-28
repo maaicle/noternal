@@ -9,8 +9,8 @@ CREATE TABLE users (
 	"first_name" varchar(255) NOT NULL,
 	"last_name" varchar(255) NOT NULL,
 	"email" varchar(255) NOT NULL,
-	"username" varchar(255) NOT NULL,
-	"password_hash" varchar(255) NOT NULL,
+	"user_name" varchar(255) NOT NULL,
+	"pass_hash" varchar(255) NOT NULL,
 	"account_non_locked" varchar(255) NOT NULL,
 	"created" TIME NOT NULL,
 	CONSTRAINT "users_pk" PRIMARY KEY ("id")

@@ -1,11 +1,10 @@
 package com.noternal.app.entity;
 
-import com.noternal.app.model.UserDto;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -26,7 +25,10 @@ public class User implements UserDetails {
     private boolean accountNonLocked;
 
     @Column(name = "created")
-    private Timestamp created;
+    private ZonedDateTime created;
+
+    @OneToMany(mappedBy = "user")
+    private List<Tag> tags;
 
     public User() {
     }
@@ -34,20 +36,21 @@ public class User implements UserDetails {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        this.created = ZonedDateTime.now();
     }
 
-    public User(String username, String password, boolean accountNonLocked) {
-        this.username = username;
-        this.password = password;
-        this.accountNonLocked = accountNonLocked;
-    }
-
-
-
-    public User(UserDto userDto){
-        this.username = userDto.getUserName();
-        this.password = userDto.getPassHash();
-    }
+//    public User(String username, String password, boolean accountNonLocked) {
+//        this.username = username;
+//        this.password = password;
+//        this.accountNonLocked = accountNonLocked;
+//    }
+//
+//
+//
+//    public User(UserDto userDto){
+//        this.username = userDto.getUserName();
+//        this.password = userDto.getPassHash();
+//    }
 
     public Long getId() {
         return id;
@@ -71,6 +74,14 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public ZonedDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(ZonedDateTime created) {
+        this.created = created;
     }
 
     @Override
