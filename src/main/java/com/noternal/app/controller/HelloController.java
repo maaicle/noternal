@@ -5,8 +5,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.noternal.app.entity.Tag;
 import com.noternal.app.entity.User;
+import com.noternal.app.repository.TagRepository;
 import com.noternal.app.security.SecurityUserDetailsService;
+import com.noternal.app.service.TagService;
+import com.noternal.app.service.TagServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,7 +23,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HelloController {
-    @Autowired private SecurityUserDetailsService userDetailsManager;
+    @Autowired
+    private SecurityUserDetailsService userDetailsManager;
+
+    @Autowired
+    private TagRepository tagRepository;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -54,7 +63,11 @@ public class HelloController {
         user.setPassword(passwordEncoder.encode(body.get("password")));
         user.setAccountNonLocked(true);
         user.setCreated(ZonedDateTime.now());
+
+        Tag tag = new Tag(user, "hidden", "user", user.getUsername());
         userDetailsManager.createUser(user);
+        tagRepository.save(tag);
+
     }
 
     private String getErrorMessage(HttpServletRequest request, String key) {

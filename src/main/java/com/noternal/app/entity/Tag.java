@@ -3,6 +3,7 @@ package com.noternal.app.entity;
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -92,5 +93,28 @@ public class Tag {
 
     public void setCreated(ZonedDateTime created) {
         this.created = created;
+    }
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "id=" + id +
+                ", user=" + user +
+                ", type='" + type + '\'' +
+                ", value='" + value + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tag tag = (Tag) o;
+        return user.equals(tag.user) && type.equals(tag.type) && value.equals(tag.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user, type, value);
     }
 }

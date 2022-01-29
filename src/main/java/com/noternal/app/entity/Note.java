@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table
+@Table(name = "notes")
 public class Note {
 
     @Id
@@ -40,6 +40,14 @@ public class Note {
     private List<NoteEvent> noteEvents;
 
     public Note() {
+    }
+
+    public Note(String body, Set<Tag> tags) {
+        this.body = body;
+        this.tags = tags;
+        this.updated = ZonedDateTime.now();
+        this.archived = false;
+        this.created = ZonedDateTime.now();
     }
 
     public long getId() {
@@ -80,5 +88,26 @@ public class Note {
 
     public void setCreated(ZonedDateTime created) {
         this.created = created;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public void addTags(Set<Tag> tags) {
+        this.tags.addAll(tags);
+    }
+
+    @Override
+    public String toString() {
+        return "Note{" +
+                "id=" + id +
+                ", body='" + body + '\'' +
+                ", tags=" + tags +
+                '}';
     }
 }

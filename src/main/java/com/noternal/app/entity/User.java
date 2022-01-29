@@ -7,6 +7,8 @@ import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name="users")
@@ -28,7 +30,7 @@ public class User implements UserDetails {
     private ZonedDateTime created;
 
     @OneToMany(mappedBy = "user")
-    private List<Tag> tags;
+    private Set<Tag> tags;
 
     public User() {
     }
@@ -93,6 +95,18 @@ public class User implements UserDetails {
         this.username = username;
     }
 
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public void addTags(Set<Tag> tags) {
+        this.tags.addAll(tags);
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -122,6 +136,22 @@ public class User implements UserDetails {
 
     @Override
     public String toString() {
-        return String.format("id= %d, username= %s", id, username);
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return username.equals(user.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username);
     }
 }

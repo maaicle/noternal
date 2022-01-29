@@ -7,7 +7,8 @@ import com.noternal.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -19,14 +20,19 @@ public class TagServiceImpl implements TagService {
     UserRepository userRepository;
 
     @Override
-    public void addTag(String value) {
+    public Optional<Tag> addTag(String value) {
         User user = userRepository.getById(1L);
-        Tag tag = new Tag(user, "custom", "custom", value);
-        tagRepository.save(tag);
+        if (!tagRepository.existsTagByUserAndTypeAndValue(user, "custom", value)) {
+            Tag tag = new Tag(user, "custom", "custom", value);
+            tagRepository.save(tag);
+            return Optional.of(tag);
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override
-    public List<Tag> getAllTags() {
+    public Set<Tag> getAllTags() {
         return null;
     }
 }
