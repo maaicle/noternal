@@ -1,5 +1,10 @@
 package com.noternal.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -34,6 +39,7 @@ public class Note {
             inverseJoinColumns = {
                 @JoinColumn(name = "tag_id", referencedColumnName = "id",
                     nullable = false, updatable = false)})
+    @JsonBackReference
     private Set<Tag> tags = new HashSet<>();
 
     @OneToMany(mappedBy = "note")
@@ -100,6 +106,17 @@ public class Note {
 
     public void addTags(Set<Tag> tags) {
         this.tags.addAll(tags);
+    }
+
+    public void removeTags(Set<Tag> tags) {
+        this.tags.removeAll(tags);
+    }
+
+    public void updateNote(Long id, String body, boolean archived) {
+        this.body = body;
+        this.tags = tags;
+        this.updated = ZonedDateTime.now();
+        this.archived = archived;
     }
 
     @Override

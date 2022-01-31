@@ -1,5 +1,10 @@
 package com.noternal.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -34,6 +39,7 @@ public class Tag {
     private ZonedDateTime created;
 
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Set<Note> notes = new HashSet<>();
 
     public Tag() {
@@ -55,13 +61,13 @@ public class Tag {
         this.id = id;
     }
 
-//    public Long getUserId() {
-//        return userId;
-//    }
-//
-//    public void setUserId(Long userId) {
-//        this.userId = userId;
-//    }
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public String getView() {
         return view;
@@ -99,7 +105,6 @@ public class Tag {
     public String toString() {
         return "Tag{" +
                 "id=" + id +
-                ", user=" + user +
                 ", type='" + type + '\'' +
                 ", value='" + value + '\'' +
                 '}';

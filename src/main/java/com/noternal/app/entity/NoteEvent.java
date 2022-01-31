@@ -1,5 +1,7 @@
 package com.noternal.app.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 
@@ -23,4 +25,14 @@ public class NoteEvent {
 
     @Column
     private boolean archived;
+
+    public NoteEvent() {
+    }
+
+    public NoteEvent(Note note) {
+        this.note = note;
+        this.body = note.getBody();
+        this.updated = note.getUpdated();
+        this.archived = note.isArchived();
+    }
 }

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class HelloController {
@@ -39,8 +40,6 @@ public class HelloController {
 
     @GetMapping("/login")
     public String login(HttpServletRequest request, HttpSession session) {
-        System.out.println(request);
-        System.out.println(session);
         session.setAttribute(
                 "error", getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION")
         );
@@ -52,8 +51,14 @@ public class HelloController {
         return "register";
     }
 
+    @GetMapping("/bootstrap")
+    public String bootstrap() { return "bootstrap"; }
+
+    @GetMapping("/cssdemo")
+    public String cssdemo() { return "cssdemo";}
+
     @PostMapping(
-            value = "/register",
+            value = "register",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = {
             MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }
     )

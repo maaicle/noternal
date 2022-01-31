@@ -9,7 +9,6 @@ import com.noternal.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,14 +25,24 @@ public class NoteServiceImpl implements NoteService{
     private TagRepository tagRepository;
 
     @Autowired
+    private NoteEventService noteEventService;
+
+    @Autowired
     private TagService tagService;
 
     @Override
-    public void addNote(String body) {
+    public void addNote(String body, Set<String> tagValues) {
         User user = userRepository.getById(1L);
         Set<Tag> userTag = tagRepository.findByUserAndTypeAndValue(user, "user", user.getUsername());
         Note note = new Note(body, userTag);
+
+        for (String tagValue : tagValues) {
+            tagService.addTag(tagValue);
+            note.addTags(tagRepository.findByUserAndTypeAndValue(user, "custom", tagValue));
+        }
+
         noteRepository.save(note);
+        noteEventService.addNoteEvent(note);
     }
 
     @Override
@@ -42,9 +51,9 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public void addTagsToNote(long id, Set<String> tagValues) {
+    public void addTagsToNote(long noteId, Set<String> tagValues) {
+        Note note = noteRepository.getById(noteId);
         User user = userRepository.getById(1L);
-        Note note = noteRepository.getById(id);
 
         for (String tagValue : tagValues) {
             tagService.addTag(tagValue);
@@ -53,4 +62,50 @@ public class NoteServiceImpl implements NoteService{
 
         noteRepository.save(note);
     }
+
+    @Override
+    public void removeTagsFromNote(long noteId, Set<String> tagValues) {
+        Note note = noteRepository.getById(noteId);
+        User user = userRepository.getById(1L);
+
+        for (String tagValue : tagValues) {
+            Set<Tag> tags = tagRepository.findByUserAndTypeAndValue(user, "custom", tagValue);
+            note.removeTags(tags);
+        }
+
+        noteRepository.save(note);
+
+    }
+
+    @Override
+    public void updateNote(long noteId, String body, Set<String> tagValues, boolean archived) {
+        Note note = noteRepository.getById(noteId);
+        User user = userRepository.getById(1L);
+        Set<Tag> currentTags = tagRepository.findByUserAndNotesAndType(user, note, "custom");
+        note.removeTags(currentTags);
+
+        for (String tagValue : tagValues) {
+            tagService.addTag(tagValue);
+            note.addTags(tagRepository.findByUserAndTypeAndValue(user, "custom", tagValue));
+        }
+
+        note.updateNote(noteId, body, archived);
+        noteRepository.save(note);
+        noteEventService.addNoteEvent(note);
+
+    }
+
+//    @Override
+//    public User getUserFromTag(Note note) {
+//        Set<Tag> tagList = note.getTags();
+//        Optional<User> user = Optional.empty();
+//        for (Tag tag : tagList) {
+//            if (tag.getType().equals("username") && tag.getValue().equals("username")) {
+//                user = Optional.of(tag.getUser());
+//
+//            }
+//        }
+//        System.out.println("NoteServiceImpl | getUserFromTag " + user);
+//        return user.get();
+//    }
 }
