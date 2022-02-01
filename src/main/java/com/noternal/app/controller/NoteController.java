@@ -1,6 +1,7 @@
 package com.noternal.app.controller;
 
 import com.noternal.app.entity.Note;
+import com.noternal.app.model.NoteDto;
 import com.noternal.app.repository.NoteRepository;
 import com.noternal.app.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,13 @@ public class NoteController {
 
     @Autowired
     NoteRepository noteRepository;
+
+    @GetMapping("/notes/all")
+    public List<NoteDto> getAllNotes() {
+//        return noteRepository.findAllByOrderByIdAsc();
+//        return noteRepository.findAll();
+        return noteService.getAllNotesDto();
+    }
 
     @PostMapping("/notes")
     public String addNote(@RequestBody Map<String, String> body) {
@@ -35,14 +43,13 @@ public class NoteController {
         if (id.isEmpty()) {
             return Optional.of("Must provide note id");
         }
-        Optional<Note> note = Optional.empty();
-        if(id.isPresent()) {
-            note = noteRepository.findById(id.get());
-            if (note.isEmpty()){
-                return Optional.of("Note does not exist");
-            }
+        Optional<NoteDto> noteDto;
+        //            note = noteRepository.findById(id.get());
+        noteDto = noteService.getNoteDto(id.get());
+        if (noteDto.isEmpty()){
+            return Optional.of("Note does not exist");
         }
-        return note;
+        return noteDto;
     }
 
     @PostMapping("/notes/{id}/add-tags")

@@ -12,6 +12,10 @@
     <p>
         This is text on which we want to apply <strong>very special</strong> styling.
     </p>
+    <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
 
     <div class="container list-box">
         <div class=container>
@@ -32,12 +36,14 @@
         <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> -->
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    ...
-                </div>
+                <div class="mb-0">
+                    <!-- <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label> -->
+                    <textarea class="form-control" id="formControlTextarea1" row="3" placeholder="this is a placeholder"></textarea>
+                  </div>
+                <!-- <div class="modal-body"></div> -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary">Save changes</button>
@@ -46,7 +52,7 @@
         </div>
     </div>
 
-<abutton type="button" th:onclick="demo()">Show Alert</abutton>
+<abutton type="button" th:onclick="getAllNotes()">Show Alert</abutton>
 
 <script type="text/javascript" th:src = "@{/js/actions.js}"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

@@ -17,7 +17,7 @@ public class NoteEvent {
     @JoinColumn(name = "note_id")
     private Note note;
 
-    @Column
+    @Column(columnDefinition="text")
     private String body;
 
     @Column

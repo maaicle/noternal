@@ -24,11 +24,11 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PostMapping("/users")
-    public String addUser(@RequestBody UserDto userDto) {
-        String passHash = passwordEncoder.encode(userDto.getPassHash());
-        userService.addUser(userDto.getUserName(), passHash);
-        return "User Added Successfully";
-    }
+    // @PostMapping("/users")
+    // public String addUser(@RequestBody UserDto userDto) {
+    //     String passHash = passwordEncoder.encode(userDto.getPassHash());
+    //     userService.addUser(userDto.getUserName(), passHash);
+    //     return "User Added Successfully";
+    // }
 
 }

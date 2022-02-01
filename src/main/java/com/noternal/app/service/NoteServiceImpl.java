@@ -3,14 +3,17 @@ package com.noternal.app.service;
 import com.noternal.app.entity.Note;
 import com.noternal.app.entity.Tag;
 import com.noternal.app.entity.User;
+import com.noternal.app.model.NoteDto;
 import com.noternal.app.repository.NoteRepository;
 import com.noternal.app.repository.TagRepository;
 import com.noternal.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.swing.text.html.Option;
+import java.util.*;
 
 @Service
 public class NoteServiceImpl implements NoteService{
@@ -45,9 +48,41 @@ public class NoteServiceImpl implements NoteService{
         noteEventService.addNoteEvent(note);
     }
 
+    @PersistenceContext
+    EntityManager entityManager;
+
     @Override
-    public List<Note> getAllNotes() {
-        return null;
+    public List<NoteDto> getAllNotesDto() {
+        List<Note> allNotes = noteRepository.findAllByOrderByIdAsc();
+        List<NoteDto> allNotesDto = new ArrayList<>();
+        for (Note note : allNotes) {
+            Set<Tag> tags = note.getTags();
+            Set<String> tagValues = new HashSet<>();
+            for (Tag tag : tags) {
+                tagValues.add(tag.getValue());
+            }
+
+            NoteDto noteDto = new NoteDto(note.getId(), note.getBody(), note.getUpdated(), note.isArchived(), note.getCreated(), tagValues);
+            allNotesDto.add(noteDto);
+        }
+
+        return allNotesDto;
+    }
+
+    @Override
+    public Optional<NoteDto> getNoteDto(long id) {
+        Optional<Note> noteReturn = noteRepository.findById(id);
+        Optional<NoteDto> noteDto = Optional.empty();
+        if (noteReturn.isPresent()) {
+            Note note = noteReturn.get();
+            Set<Tag> tags = note.getTags();
+            Set<String> tagValues = new HashSet<>();
+            for (Tag tag : tags) {
+                tagValues.add(tag.getValue());
+            }
+            noteDto = Optional.of(new NoteDto(note.getId(), note.getBody(), note.getUpdated(), note.isArchived(), note.getCreated(), tagValues));
+        }
+        return noteDto;
     }
 
     @Override

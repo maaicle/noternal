@@ -12,3 +12,32 @@ strong {
 p {
     font-family: sans-serif;
 }
+
+textarea.form-control {
+    min-height: calc(100vh - 120px);
+    white-space: pre-wrap;
+}
+
+.card-deck {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.card {
+    width: 18rem;
+    /* max-height: 80px; */
+}
+
+.card-text {
+    white-space: pre-wrap;
+}
+
+.w3-tag {
+    border-radius: 10px;
+    margin: 2px;
+}
+
+.btn-sm {
+    font-size: 0.6em;
+}

@@ -1,9 +1,6 @@
 package com.noternal.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
@@ -19,7 +16,7 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column
+    @Column(columnDefinition="text")
     private String body;
 
     @Column
@@ -40,7 +37,7 @@ public class Note {
                 @JoinColumn(name = "tag_id", referencedColumnName = "id",
                     nullable = false, updatable = false)})
     @JsonBackReference
-    private Set<Tag> tags = new HashSet<>();
+    private Set<Tag> tags = new HashSet<Tag>();
 
     @OneToMany(mappedBy = "note")
     private List<NoteEvent> noteEvents;
