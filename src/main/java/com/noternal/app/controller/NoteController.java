@@ -29,7 +29,6 @@ public class NoteController {
     @PostMapping("/notes")
     public String addNote(@RequestBody Map<String, String> body) {
         String noteBody = body.get("body");
-
         String[] strParts = body.get("tagValues").split(",");
         List<String> listParts = Arrays.asList(strParts);
         Set<String> tagValues = new HashSet<>(listParts);

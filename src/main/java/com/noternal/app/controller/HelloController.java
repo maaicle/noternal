@@ -1,5 +1,6 @@
 package com.noternal.app.controller;
 
+import java.security.Principal;
 import java.time.ZonedDateTime;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +35,8 @@ public class HelloController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/")
-    public String index() {
+    public String index(Principal principal) {
+
         return "index";
     }
 

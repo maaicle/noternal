@@ -101,16 +101,15 @@ const newTag = (ele) => {
         <input type="text" class="form-control tag-input" id="formGroupExampleInput">
     </span>
     `
+    document.querySelector('.tag-input').focus();
     creatingTag = true;
 }
 
 const addTag = () => {
-    console.log('hit addTag')
-    console.log('creating tag: ' + creatingTag);
     const inputEle = document.querySelector(".tag-input");
-    const tagInput = inputEle.value;
-    console.log(tagInput, tagInput === true);
-    if (tagInput) {
+    const tagInput = inputEle.value.trim();
+    const tagIndex = activeTags.indexOf(tagInput);
+    if (tagInput && tagIndex < 0) {
         const tagContainer = document.querySelector('.modal-tags');
         activeTags.push(tagInput);
         const newTag = document.createElement('span');
@@ -123,7 +122,9 @@ const addTag = () => {
     creatingTag = false;
 }
 
-//<textarea class="form-control" id="formControlTextarea1" row="3" placeholder="this is a placeholder"></textarea>
+const newNote = () => {
+    console.log("newNote hit")
+}
 
 //This is a catch all function for newly created HTML elements
 let newTargets = event => {
@@ -135,7 +136,7 @@ let keyListener = event => {
         saveNote();
     }
 
-    if (creatingTag && (event.key === 'Enter' || event.key === 'Space')) {
+    if (creatingTag && (event.key === 'Enter' || event.key === ' ')) {
         addTag();
     }
 }

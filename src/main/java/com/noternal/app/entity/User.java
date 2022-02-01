@@ -41,19 +41,6 @@ public class User implements UserDetails {
         this.created = ZonedDateTime.now();
     }
 
-//    public User(String username, String password, boolean accountNonLocked) {
-//        this.username = username;
-//        this.password = password;
-//        this.accountNonLocked = accountNonLocked;
-//    }
-//
-//
-//
-//    public User(UserDto userDto){
-//        this.username = userDto.getUserName();
-//        this.password = userDto.getPassHash();
-//    }
-
     public Long getId() {
         return id;
     }
@@ -62,7 +49,6 @@ public class User implements UserDetails {
         this.id = id;
 
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

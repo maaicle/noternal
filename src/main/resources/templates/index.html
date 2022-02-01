@@ -13,6 +13,10 @@
         <input type="submit" value="Sign Out"/>
     </form>
 
+    <div class="add-note-container">
+      <span class="w3-tag w3-blue new-tag" onclick="newNote(this)"> + </span>
+    </div>
+
     <div class="card-deck">
         <div class=container>
             <div class="card" style="width: 18rem;">
@@ -46,9 +50,6 @@
                   <p class="modal-tags"></p>
                   <div class="add-tag-container">
                     <span class="w3-tag w3-blue new-tag" onclick="newTag(this)"> + </span>
-                    <!-- <span class="w3-tag w3-blue new-tag">
-                      <input type="text" class="form-control" id="formGroupExampleInput">
-                    </span> -->
                   </div>
                 </div>
             </div>
