@@ -59,7 +59,9 @@ public class NoteServiceImpl implements NoteService{
             Set<Tag> tags = note.getTags();
             Set<String> tagValues = new HashSet<>();
             for (Tag tag : tags) {
-                tagValues.add(tag.getValue());
+                if (tag.getType().equals("custom")) {
+                    tagValues.add(tag.getValue());
+                }
             }
 
             NoteDto noteDto = new NoteDto(note.getId(), note.getBody(), note.getUpdated(), note.isArchived(), note.getCreated(), tagValues);
@@ -78,7 +80,9 @@ public class NoteServiceImpl implements NoteService{
             Set<Tag> tags = note.getTags();
             Set<String> tagValues = new HashSet<>();
             for (Tag tag : tags) {
-                tagValues.add(tag.getValue());
+                if (tag.getType().equals("custom")) {
+                    tagValues.add(tag.getValue());
+                }
             }
             noteDto = Optional.of(new NoteDto(note.getId(), note.getBody(), note.getUpdated(), note.isArchived(), note.getCreated(), tagValues));
         }
@@ -120,8 +124,10 @@ public class NoteServiceImpl implements NoteService{
         note.removeTags(currentTags);
 
         for (String tagValue : tagValues) {
-            tagService.addTag(tagValue);
-            note.addTags(tagRepository.findByUserAndTypeAndValue(user, "custom", tagValue));
+            if (!tagValue.isEmpty()) {
+                tagService.addTag(tagValue);
+                note.addTags(tagRepository.findByUserAndTypeAndValue(user, "custom", tagValue));
+            }
         }
 
         note.updateNote(noteId, body, archived);

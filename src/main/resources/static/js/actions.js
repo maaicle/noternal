@@ -4,6 +4,8 @@ const textAreaContainer = document.querySelector('.textarea-container');
 
 let activeId = 0;
 let activeNote = '';
+let activeTags = [];
+let creatingTag = false;
 
 const getAllNotes = () => {
     cardDeck.innerHTML = '';
@@ -23,35 +25,20 @@ const getAllNotes = () => {
                         <p class="tag-container"></p>
                     </div>
                 `
-                console.log(ele.tags);
                 ele.tags.forEach(tag => {
                     const newTag = document.createElement('span');
                     const tagContainer = newSec.querySelector('.tag-container');
                     newTag.classList.add('w3-tag');
                     newTag.classList.add('w3-blue');
+                    newTag.innerText = tag;
                     tagContainer.appendChild(newTag);
-                    newTag.innerHTML = `${tag} <button type="button" class="btn-close btn-sm" aria-label="Close"></button>`
                 })
-            // <span class="w3-tag w3-blue">
-            //     lil
-            // <button type="button" class="btn-close btn-sm" aria-label="Close"></button>
-            // </span>
-            // <span class="w3-tag w3-blue">
-            //     medium
-            //     <button type="button" class="btn-close btn-sm" aria-label="Close"></button>
-            // </span>
-            // <span class="w3-tag w3-blue">
-            //     y
-            //     <button type="button" class="btn-close btn-sm" aria-label="Close"></button>
-            // </span>
-                //<button type="button" class="btn btn-primary edit-btn" data-bs-toggle="modal" data-bs-target="#exampleModal" id=${ele.id}>
             })
         })
 }
 
 const editNote = (ele) => {
     let noteId = Number.parseInt(ele.id)
-    console.log(`opened note's noteId ${noteId}`);
     axios.get(`notes/${noteId}`)
         .then(res => {
             const currentTextArea = document.getElementById('formControlTextarea1');
@@ -64,13 +51,15 @@ const editNote = (ele) => {
             activeNote = newTextArea;
             activeId = noteId;
             
+            const tagContainer = document.querySelector('.modal-tags');
+            tagContainer.innerHTML = '';
             res.data.tags.forEach(tag => {
+                activeTags.push(tag);
                 const newTag = document.createElement('span');
-                const tagContainer = document.querySelector('.modal-tags');
                 newTag.classList.add('w3-tag');
                 newTag.classList.add('w3-blue');
                 tagContainer.appendChild(newTag);
-                newTag.innerHTML = `${tag} <button type="button" class="btn-close btn-sm" aria-label="Close"></button>`
+                newTag.innerHTML = `${tag}<button type="button" class="btn-close btn-sm" aria-label="Close" onclick="removeTag(this)"></button>`
             })
         }) 
 }
@@ -78,9 +67,10 @@ const editNote = (ele) => {
 const saveNote = () => {
     console.log(activeNote);
     let noteBody = activeNote.value;
+    let tagsFormatted = String(activeTags);
     const body = {
         body: noteBody,
-        tagValues: "fantasy,mystery,other,other",
+        tagValues: tagsFormatted,
         archived: "false"
     }
     console.log(body);
@@ -90,6 +80,47 @@ const saveNote = () => {
             getAllNotes();
         })
     activeId = 0;
+    activeTags = [];
+}
+
+const removeTag = (ele) => {
+    console.log(activeTags)
+    let removeIndex = activeTags.indexOf(ele.parentNode.innerText)
+    if (removeIndex >= 0) {
+        activeTags.splice(removeIndex, 1);
+    }
+    ele.parentNode.remove();
+    console.log(activeTags);
+}
+
+const newTag = (ele) => {
+    console.log("newTag");
+    ele.parentNode.innerHTML =
+    `
+    <span class="w3-tag w3-blue new-tag">
+        <input type="text" class="form-control tag-input" id="formGroupExampleInput">
+    </span>
+    `
+    creatingTag = true;
+}
+
+const addTag = () => {
+    console.log('hit addTag')
+    console.log('creating tag: ' + creatingTag);
+    const inputEle = document.querySelector(".tag-input");
+    const tagInput = inputEle.value;
+    console.log(tagInput, tagInput === true);
+    if (tagInput) {
+        const tagContainer = document.querySelector('.modal-tags');
+        activeTags.push(tagInput);
+        const newTag = document.createElement('span');
+        newTag.classList.add('w3-tag');
+        newTag.classList.add('w3-blue');
+        tagContainer.appendChild(newTag);
+        newTag.innerHTML = `${tagInput}<button type="button" class="btn-close btn-sm" aria-label="Close" onclick="removeTag(this)"></button>`
+    }
+    inputEle.parentNode.parentNode.innerHTML = `<span class="w3-tag w3-blue new-tag" onclick="newTag(this)"> + </span>`;
+    creatingTag = false;
 }
 
 //<textarea class="form-control" id="formControlTextarea1" row="3" placeholder="this is a placeholder"></textarea>
@@ -101,8 +132,11 @@ let newTargets = event => {
 
 let keyListener = event => {
     if (activeId > 0 && event.key === 'Escape') {
-        // const closeButton = document.querySelector('btn-close'); 
         saveNote();
+    }
+
+    if (creatingTag && (event.key === 'Enter' || event.key === 'Space')) {
+        addTag();
     }
 }
 

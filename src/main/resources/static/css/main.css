@@ -29,8 +29,13 @@ textarea.form-control {
     /* max-height: 80px; */
 }
 
+.card-body {
+    cursor: pointer;
+}
+
 .card-text {
     white-space: pre-wrap;
+    cursor: pointer;
 }
 
 .w3-tag {
@@ -40,4 +45,12 @@ textarea.form-control {
 
 .btn-sm {
     font-size: 0.6em;
+}
+
+.modal-footer {
+    justify-content: flex-start;
+}
+
+.new-tag {
+    cursor: pointer;
 }

@@ -69,8 +69,11 @@ public class NoteController {
         String noteBody = body.get("body");
         boolean archived = Boolean.parseBoolean(body.get("archived"));
 
+        List<String> listParts = new ArrayList<>();
         String[] strParts = body.get("tagValues").split(",");
-        List<String> listParts = Arrays.asList(strParts);
+        if (strParts.length > 0) {
+            listParts = Arrays.asList(strParts);
+        }
         Set<String> tagValues = new HashSet<>(listParts);
         noteService.updateNote(id, noteBody, tagValues, archived);
         return "Note Updated";
