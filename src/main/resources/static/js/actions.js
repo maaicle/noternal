@@ -47,6 +47,7 @@ const viewNotes = (res) => {
         newSec.classList.add('card');
         newSec.classList.add('mt-4');
         newSec.classList.add('ms-4');
+        newSec.classList.add('bg-secondary');
         cardDeck.appendChild(newSec);
 
         // console.log(truncString)
@@ -76,8 +77,15 @@ const newNote = () => {
     activeNote = newTextArea;
     const tagContainer = document.querySelector('.modal-tags');
     tagContainer.innerHTML = '';
-    document.querySelector('.dropdown').remove();
+    let menuBtn = document.querySelector('.dropdown');
+    if (menuBtn) {
+        menuBtn.remove();
+    }
+    setTimeout(() => {
+        newTextArea.focus();
+    }, 500);
 }
+
 
 const editNote = (ele) => {
     console.log("hit editNote");

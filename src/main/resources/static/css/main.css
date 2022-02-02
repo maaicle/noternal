@@ -45,11 +45,13 @@ textarea:focus {
 .card-body {
     cursor: pointer;
     border: none;
+    border-radius: 5px;
 }
 
 .card-footer {
     border: none;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 .card-text {
