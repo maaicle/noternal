@@ -21,9 +21,12 @@ public class NoteController {
 
     @GetMapping("/notes/all")
     public List<NoteDto> getAllNotes() {
-//        return noteRepository.findAllByOrderByIdAsc();
-//        return noteRepository.findAll();
         return noteService.getAllNotesDto();
+    }
+
+    @GetMapping("/notes/search/{value}")
+    public List<NoteDto> getSearchedNotes(@PathVariable String value) {
+        return noteService.getSearchedNotesDto(value);
     }
 
     @PostMapping("/notes")
@@ -43,7 +46,6 @@ public class NoteController {
             return Optional.of("Must provide note id");
         }
         Optional<NoteDto> noteDto;
-        //            note = noteRepository.findById(id.get());
         noteDto = noteService.getNoteDto(id.get());
         if (noteDto.isEmpty()){
             return Optional.of("Note does not exist");

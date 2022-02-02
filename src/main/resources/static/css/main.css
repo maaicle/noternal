@@ -14,8 +14,21 @@ p {
 }
 
 textarea.form-control {
-    min-height: calc(100vh - 120px);
+    min-height: calc(100vh - 140px);
     white-space: pre-wrap;
+    border: none;
+}
+
+textarea:hover,
+textarea:active,
+textarea:focus {
+    outline:0px !important;
+    -webkit-appearance:none;
+    box-shadow: none !important;
+}
+
+.modal-header {
+    border: none;
 }
 
 .card-deck {
@@ -26,10 +39,16 @@ textarea.form-control {
 
 .card {
     width: 18rem;
-    /* max-height: 80px; */
+    border: gray;
 }
 
 .card-body {
+    cursor: pointer;
+    border: none;
+}
+
+.card-footer {
+    border: none;
     cursor: pointer;
 }
 
@@ -41,6 +60,7 @@ textarea.form-control {
 .w3-tag {
     border-radius: 10px;
     margin: 2px;
+    color: rgb(255, 166, 0);
 }
 
 .btn-sm {
@@ -49,8 +69,21 @@ textarea.form-control {
 
 .modal-footer {
     justify-content: flex-start;
+    border: none;
 }
 
 .new-tag {
     cursor: pointer;
 }
+
+/* .search-container {
+    border: none;
+}
+
+.search-bar:hover,
+.search-bar:active,
+.search-bar:focus {
+    outline:0px !important;
+    -webkit-appearance:none;
+    box-shadow: none !important;
+} */

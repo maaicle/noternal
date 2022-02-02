@@ -13,6 +13,8 @@ import java.util.Set;
 public interface NoteService {
     void addNote(String body, Set<String> tagValues);
     List<NoteDto> getAllNotesDto();
+    List<NoteDto> getSearchedNotesDto(String value);
+    List<NoteDto> getNotesDto(List<Note> notes);
     Optional<NoteDto> getNoteDto(long id);
     void addTagsToNote(long id, Set<String> tagValues);
     void removeTagsFromNote(long noteId, Set<String> tagValues);

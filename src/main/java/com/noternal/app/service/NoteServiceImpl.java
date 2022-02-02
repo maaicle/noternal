@@ -53,9 +53,22 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public List<NoteDto> getAllNotesDto() {
-        List<Note> allNotes = noteRepository.findAllByOrderByIdAsc();
-        List<NoteDto> allNotesDto = new ArrayList<>();
-        for (Note note : allNotes) {
+        List<Note> allNotes = noteRepository.findByArchivedOrderByIdAsc(false);
+        return getNotesDto(allNotes);
+    }
+
+    @Override
+    public List<NoteDto> getSearchedNotesDto(String value) {
+        User user = userRepository.getById(1L);
+        Set<Tag> tags = tagRepository.findByUserAndTypeAndValue(user, "custom", value);
+        List<Note> notes = noteRepository.findByArchivedAndTagsInOrderByIdAsc(false, tags);
+        return getNotesDto(notes);
+    }
+
+    @Override
+    public List<NoteDto> getNotesDto(List<Note> notes) {
+        List<NoteDto> noteDtos = new ArrayList<>();
+        for (Note note : notes) {
             Set<Tag> tags = note.getTags();
             Set<String> tagValues = new HashSet<>();
             for (Tag tag : tags) {
@@ -63,12 +76,10 @@ public class NoteServiceImpl implements NoteService{
                     tagValues.add(tag.getValue());
                 }
             }
-
             NoteDto noteDto = new NoteDto(note.getId(), note.getBody(), note.getUpdated(), note.isArchived(), note.getCreated(), tagValues);
-            allNotesDto.add(noteDto);
+            noteDtos.add(noteDto);
         }
-
-        return allNotesDto;
+        return noteDtos;
     }
 
     @Override

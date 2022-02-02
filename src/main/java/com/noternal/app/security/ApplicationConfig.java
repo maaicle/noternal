@@ -16,18 +16,15 @@ public class ApplicationConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-//            .authorizeRequests().anyRequest().permitAll();
-                .csrf().disable()
-                .authorizeRequests().antMatchers("/register**", "/login").permitAll()
-//                .and().authorizeRequests().antMatchers("/login").permitAll()
-                .and().authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin() .loginPage("/login")
-//                .permitAll()
-                .and()
-                .logout() .invalidateHttpSession(true)
-                .clearAuthentication(true);
-//                .permitAll();
+            .authorizeRequests().anyRequest().permitAll();
+                http.csrf().disable();
+//                .authorizeRequests().antMatchers("/register**", "/login").permitAll()
+//                .and().authorizeRequests()
+//                .anyRequest().authenticated()
+//                .and()
+//                .formLogin() .loginPage("/login")
+//                .and()
+//                .logout() .invalidateHttpSession(true)
+//                .clearAuthentication(true);
     }
 }
