@@ -14,7 +14,7 @@
 	<name>app</name>
 	<description>Web app to keep and store notes. </description>
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
